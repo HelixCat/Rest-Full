@@ -23,8 +23,8 @@ public class ProductController {
 
     // insert a product into database
     @PostMapping("/product")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        Product savedProduct = productService.saveProduct(product);
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
+        ProductDTO savedProduct = productService.saveProduct(productDTO);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
@@ -37,28 +37,29 @@ public class ProductController {
 
 
     @GetMapping("/products")
-    public List<Product> findAllProduct() {
+    public List<ProductDTO> findAllProduct() {
         return productService.getProducts();
     }
 
 
     @PatchMapping("/product")
-    public ResponseEntity<Product> updateProductById(@RequestParam(name ="productId") long productId, @RequestBody Product product) {
-        Product updatedProduct = productService.updateProduct(productId, product);
+    public ResponseEntity<ProductDTO> updateProductById(@RequestParam(name ="productId") long productId, @RequestBody Product product) {
+        ProductDTO updatedProduct = productService.updateProduct(productId, product);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
 
     @DeleteMapping("/product")
-    public ResponseEntity<Product> deleteProductById(@RequestParam(name ="productId") long productId) {
-        Product deletedProduct = productService.deleteproduct(productId);
-        return new ResponseEntity<>(deletedProduct, HttpStatus.OK);
+    public ResponseEntity<ProductDTO> deleteProductById(@RequestParam(name ="productId") long productId) {
+        ProductDTO deletedProductDTO = productService.deletedProduct(productId);
+        return new ResponseEntity<>(deletedProductDTO, HttpStatus.OK);
     }
 
 
 
     @GetMapping("/products-by-name")
-    public List<Product> getProductsByName(@RequestParam(name ="productName") String productName) {
-        return productService.getProductsByName(productName);
+    public ResponseEntity<ProductDTO> getProductsByName(@RequestParam(name ="productName") String productName) {
+        ProductDTO productDTO = productService.getProductsByName(productName);
+        return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -23,8 +24,9 @@ public class ProductService {
     }
 
 
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public ProductDTO saveProduct(ProductDTO productDTO) {
+        Product product = modelMapper.map(productDTO, Product.class);
+        return modelMapper.map(productRepository.save(product), ProductDTO.class);
     }
 
 
@@ -34,30 +36,32 @@ public class ProductService {
     }
 
 
-    public List<Product> getProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getProducts() {
+        return productRepository.findAll().stream().map(product -> modelMapper.map(product, ProductDTO.class)).collect(Collectors.toList());
     }
 
 
-    public Product updateProduct(long productId, Product product) {
+    public ProductDTO updateProduct(long productId, Product product) {
         Product existingProduct = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not Found Product"));
         existingProduct.setName(product.getName());
         existingProduct.setColor(product.getColor());
         existingProduct.setPrice(product.getPrice());
         existingProduct.setExist(product.getExist());
         productRepository.save(existingProduct);
-        return existingProduct;
+        return modelMapper.map(existingProduct, ProductDTO.class);
     }
 
 
-    public Product deleteproduct(long productId) {
+    public ProductDTO deletedProduct(long productId) {
         Product existingProduct = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not Found Product"));
+        ProductDTO deletedProductDTO = modelMapper.map(existingProduct, ProductDTO.class);
         productRepository.deleteById(productId);
-        return existingProduct;
+        return deletedProductDTO;
     }
 
 
-    public List<Product> getProductsByName(String productName) {
-        return productRepository.getProductsByName(productName);
+    public ProductDTO getProductsByName(String productName) {
+        Product product = productRepository.getProductsByName(productName);
+        return modelMapper.map(product, ProductDTO.class);
     }
 }
