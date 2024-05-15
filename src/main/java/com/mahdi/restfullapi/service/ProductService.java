@@ -1,6 +1,7 @@
 package com.mahdi.restfullapi.service;
 
 import com.mahdi.restfullapi.dto.ProductDTO;
+import com.mahdi.restfullapi.exception.BusinessException;
 import com.mahdi.restfullapi.model.Product;
 import com.mahdi.restfullapi.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,8 +33,12 @@ public class ProductService {
 
 
     public ProductDTO getProduct(long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not Found Product"));
-        return modelMapper.map(product, ProductDTO.class);
+        try {
+            Product product = productRepository.findById(productId).orElse(null);
+            return modelMapper.map(product, ProductDTO.class);
+        } catch (RuntimeException ex) {
+            throw new BusinessException("Not Found" , ex);
+        }
     }
 
 
@@ -42,21 +48,31 @@ public class ProductService {
 
 
     public ProductDTO updateProduct(long productId, Product product) {
-        Product existingProduct = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not Found Product"));
-        existingProduct.setName(product.getName());
-        existingProduct.setColor(product.getColor());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setExist(product.getExist());
-        productRepository.save(existingProduct);
-        return modelMapper.map(existingProduct, ProductDTO.class);
+        try {
+            Product existingProduct = productRepository.findById(productId).orElse(null);
+            if (Objects.nonNull(existingProduct)) {
+                existingProduct.setName(product.getName());
+                existingProduct.setColor(product.getColor());
+                existingProduct.setPrice(product.getPrice());
+                existingProduct.setExist(product.getExist());
+                productRepository.save(existingProduct);
+            }
+            return modelMapper.map(existingProduct, ProductDTO.class);
+        } catch (RuntimeException ex) {
+            throw new BusinessException("Not Found", ex);
+        }
     }
 
 
     public ProductDTO deletedProduct(long productId) {
-        Product existingProduct = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not Found Product"));
-        ProductDTO deletedProductDTO = modelMapper.map(existingProduct, ProductDTO.class);
-        productRepository.deleteById(productId);
-        return deletedProductDTO;
+        try {
+            Product existingProduct = productRepository.findById(productId).orElse(null);
+            ProductDTO deletedProductDTO = modelMapper.map(existingProduct, ProductDTO.class);
+            productRepository.deleteById(productId);
+            return deletedProductDTO;
+        } catch (RuntimeException ex) {
+            throw new BusinessException("Not Found", ex);
+        }
     }
 
 
