@@ -1,6 +1,7 @@
 package com.mahdi.restfullapi.service;
 
 import com.mahdi.restfullapi.dto.ProductDTO;
+import com.mahdi.restfullapi.dto.ProductRecordDTO;
 import com.mahdi.restfullapi.exception.BusinessException;
 import com.mahdi.restfullapi.model.Product;
 import com.mahdi.restfullapi.repository.ProductRepository;
@@ -26,9 +27,10 @@ public class ProductService {
     }
 
 
-    public ProductDTO saveProduct(ProductDTO productDTO) {
-        Product product = modelMapper.map(productDTO, Product.class);
-        return modelMapper.map(productRepository.save(product), ProductDTO.class);
+    public ProductRecordDTO saveProduct(ProductRecordDTO productRecordDTO) {
+        Product product = modelMapper.map(productRecordDTO, Product.class);
+        productRepository.save(product);
+        return productRecordDTO;
     }
 
 

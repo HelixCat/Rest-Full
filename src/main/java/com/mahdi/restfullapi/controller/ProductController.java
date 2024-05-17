@@ -1,6 +1,7 @@
 package com.mahdi.restfullapi.controller;
 
 import com.mahdi.restfullapi.dto.ProductDTO;
+import com.mahdi.restfullapi.dto.ProductRecordDTO;
 import com.mahdi.restfullapi.model.Product;
 import com.mahdi.restfullapi.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class ProductController {
 
     // insert a product into database
     @PostMapping("/product")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
-        ProductDTO savedProduct = productService.saveProduct(productDTO);
+    public ResponseEntity<ProductRecordDTO> addProduct(@RequestBody ProductRecordDTO productRecordDTO) {
+        ProductRecordDTO savedProduct = productService.saveProduct(productRecordDTO);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
@@ -56,8 +57,7 @@ public class ProductController {
     }
 
 
-
-    @GetMapping("/products-by-name")
+    @GetMapping("/product")
     public ResponseEntity<ProductDTO> getProductsByName(@RequestParam(name ="productName") String productName) {
         ProductDTO productDTO = productService.getProductsByName(productName);
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
