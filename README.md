@@ -7,8 +7,8 @@
 ## request :
 
 > ### post:
-create operation
-> http://localhost:9090/product
+> create operation
+> > http://localhost:9090/product
 ```JSON
 {
     "name": "Car",
@@ -19,25 +19,25 @@ create operation
 ```
 ___
 
-> #### Get 
-read operation
-> http://localhost:9090/product?productId=1 
+> ### Get
+> read operation
+> > http://localhost:9090/product?productId=1
+> >
+> > http://localhost:9090/product?productName=Car
+> ### get (all product):
+> > http://localhost:9090/products
 
 ___
 
-#### get (all product):
-> http://localhost:9090/products
-
-___
-#### Delete:
-delete operation
-> http://localhost:9090/product?productId=1 
+> ### Delete:
+> delete operation
+> > http://localhost:9090/product?productId=1
 
 ___
 
-# PATCH:
-update operation
-> http://localhost:9090/product?productId=1 
+> ### PATCH:
+> update operation
+> > http://localhost:9090/product?productId=1
 
 ```JSON
 {
