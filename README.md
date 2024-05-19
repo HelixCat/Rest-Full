@@ -23,7 +23,7 @@ ___
 > read operation
 > > http://localhost:9090/product?productId=1
 > >
-> > http://localhost:9090/product?productName=Car
+> > http://localhost:9090/product-by-name?productName=Car
 > ### get (all product):
 > > http://localhost:9090/products
 
