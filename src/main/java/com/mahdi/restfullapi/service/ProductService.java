@@ -80,6 +80,10 @@ public class ProductService {
 
     public ProductDTO getProductsByName(String productName) {
         Product product = productRepository.getProductsByName(productName);
-        return modelMapper.map(product, ProductDTO.class);
+        if (Objects.nonNull(product)) {
+            return modelMapper.map(product, ProductDTO.class);
+        } else {
+            throw new BusinessException("product not found", new Throwable().getCause());
+        }
     }
 }
